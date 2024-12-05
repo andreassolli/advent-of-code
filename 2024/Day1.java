@@ -1,6 +1,44 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 public class Day1 {
+    public static void main(String[] args){
+        ArrayList<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day1.txt"))){
+            String line = reader.readLine();
+
+            while(line != null){
+                lines.add(line);
+                line = reader.readLine();
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+        Map<String, Integer> map = new HashMap<>();
+
+        for(String line: lines){
+            String[] numbers = line.split(" {3}");
+            int x = parseInt(numbers[0]);
+            int y = parseInt(numbers[1]);
+            String numberString = "Number: " + y;
+            int numberAmount = map.getOrDefault(numberString, 0);
+            list1.add(binarySearch(list1, x), x);
+            list2.add(binarySearch(list2, y), y);
+            map.put(numberString, numberAmount + 1);
+        }
+        System.out.println(distanceSorted(list1, list2));
+        System.out.println(distanceMap(list1, map));
+
+    }
 
     private static int binarySearch(List<Integer> list, int num){
         int start = 0;
@@ -18,57 +56,21 @@ public class Day1 {
         return start;
     }
 
-    public static void createSortedLists(){
-        List<Integer> list1 = new ArrayList<>();
-        List<Integer> list2 = new ArrayList<>();
-
-        Scanner scanner = new Scanner(System.in);
-        int x = 1;
-        while(x<=2000){
-            int number = scanner.nextInt();
-            if(x % 2 == 0){
-                list1.add(binarySearch(list1, number), number);
-            } else {
-                list2.add(binarySearch(list2, number), number);
-            }
-            x++;
-        }
-
+    public static int distanceSorted(List<Integer>list1, List<Integer>list2){
         int distance = 0;
         for(int i = 0; i < list1.size(); i++){
             distance += Math.abs(list1.get(i) - list2.get(i));
         }
-
-        System.out.println(distance);
+        return distance;
     }
 
-    public static void createSetAndList(){
-        List<Integer> list1 = new ArrayList<>();
-        Map<String, Integer> list2 = new HashMap<>();
-
-        Scanner scanner = new Scanner(System.in);
-        int x = 1;
-        while(x<=2000){
-            int number = scanner.nextInt();
-
-            if(x % 2 == 0){
-                String numberString = "Number: " + number;
-                int numberAmount = list2.getOrDefault(numberString, 0);
-                list2.put(numberString, numberAmount + 1);
-            } else {
-                list1.add(number);
-            }
-            x++;
-        }
-
+    public static int distanceMap(List<Integer> list, Map<String,Integer> map){
         int distance = 0;
-        for (int number : list1) {
-            int amount = list2.getOrDefault("Number: " + number, 0);
+        for (int number : list) {
+            int amount = map.getOrDefault("Number: " + number, 0);
             distance += number * amount;
         }
-
-        System.out.println(distance);
-
+        return distance;
     }
 
 }

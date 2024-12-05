@@ -1,8 +1,50 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class Day2 {
+    public static void main(String[] args){
+        ArrayList<String> lines = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day2.txt"))){
+            String line = reader.readLine();
+
+            while(line != null){
+                lines.add(line);
+                line = reader.readLine();
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        int safe = 0;
+        int reallySafe = 0;
+
+        for (String line : lines) {
+            List<Integer> report = new ArrayList<>();
+            String[] numbersString = line.split(" ");
+            for(String numString: numbersString){
+                report.add(parseInt(numString));
+            }
+
+            if(isSafe(report)){
+                safe++;
+                reallySafe++;
+            } else if (isReallySafe(report)){
+                reallySafe++;
+            }
+
+        }
+
+        System.out.println(safe);
+        System.out.println(reallySafe);
+
+    }
+
     private static boolean isSafe(List<Integer> report){
         int previous = report.getFirst();
         int direction = 0;
@@ -37,28 +79,5 @@ public class Day2 {
         }
         return false;
     }
-
-    public static void checkReports(){
-        int totalSafe = 0;
-        int totalSafeDampener = 0;
-
-        Scanner scanner = new Scanner(System.in);
-
-        while(scanner.hasNextLine()){
-            String reportString = scanner.nextLine();
-            if(reportString.isEmpty()) break;
-            String[] reportArray = reportString.split(" ");
-            List<Integer> reportList = new ArrayList<>();
-            for(String stringNumber: reportArray){
-                reportList.add(Integer.valueOf(stringNumber));
-            }
-            if(isSafe(reportList)) totalSafe++;
-            if(isReallySafe(reportList)) totalSafeDampener++;
-        }
-
-        System.out.println(totalSafe);
-        System.out.println(totalSafeDampener);
-    }
-
 
 }
