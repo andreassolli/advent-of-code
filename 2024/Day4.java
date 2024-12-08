@@ -26,14 +26,7 @@ public class Day4 {
            String line = lines.get(i);
            for(int j = 0; j < line.length(); j++){
                if(line.charAt(j) == 'X'){
-                   if(north(lines, i, j)) total++;
-                   if(northeast(lines, i, j)) total++;
-                   if(northwest(lines, i, j)) total++;
-                   if(south(lines, i, j)) total++;
-                   if(southeast(lines, i, j)) total++;
-                   if(southwest(lines, i, j)) total++;
-                   if(east(lines, i, j)) total++;
-                   if(west(lines, i, j)) total++;
+                   total += directions(lines, i, j);
                }
                if(line.charAt(j) == 'A'){
                    if(around(lines, i, j)) totalMas++;
@@ -45,60 +38,28 @@ public class Day4 {
         System.out.println(totalMas);
     }
 
-    private static boolean north(ArrayList<String> lines, int i, int j){
-        if (i < 3) return false;
-        return lines.get(i - 1).charAt(j) == 'M'
-                && lines.get(i - 2).charAt(j) == 'A'
-                && lines.get(i - 3).charAt(j) == 'S';
-    }
+    private static int directions(ArrayList<String> lines, int x, int y){
+        int count = 0;
+        int[][] directions = {{0,1}, {0,-1}, {1,1}, {1,0}, {1,-1}, {-1,1}, {-1,-1}, {-1,0}};
+        String word = "MAS";
+        int chars = word.length();
 
-    private static boolean south(ArrayList<String> lines, int i, int j){
-        if (i >= lines.size() - 3) return false;
-        return lines.get(i + 1).charAt(j) == 'M'
-                && lines.get(i + 2).charAt(j) == 'A'
-                && lines.get(i + 3).charAt(j) == 'S';
-    }
+        for(int[] direction: directions){
+            boolean match = true;
+            int dirX = direction[0];
+            int dirY = direction[1];
+            if(0 > x + dirX * chars || x + dirX * chars >= lines.size()
+                    ||  0 > y + dirY * chars || y + dirY * chars >= lines.getFirst().length()) continue;
+            for(int i = 1; i <= chars; i++){
+                if(lines.get(x + dirX * i).charAt(y + dirY*i) != word.charAt(i-1)){
+                    match = false;
+                    break;
+                };
+            }
 
-    private static boolean east(ArrayList<String> lines, int i, int j){
-        if (j >= lines.get(i).length() - 3) return false;
-        return lines.get(i).charAt(j + 1) == 'M'
-                && lines.get(i).charAt(j + 2) == 'A'
-                && lines.get(i).charAt(j + 3) == 'S';
-    }
-
-    private static boolean west(ArrayList<String> lines, int i, int j){
-        if (j < 3) return false;
-        return lines.get(i).charAt(j - 1) == 'M'
-                && lines.get(i).charAt(j - 2) == 'A'
-                && lines.get(i).charAt(j - 3) == 'S';
-    }
-
-    private static boolean northwest(ArrayList<String> lines, int i, int j){
-        if (j < 3 || i < 3) return false;
-        return lines.get(i - 1).charAt(j - 1) == 'M'
-                && lines.get(i - 2).charAt(j - 2) == 'A'
-                && lines.get(i - 3).charAt(j - 3) == 'S';
-    }
-
-    private static boolean northeast(ArrayList<String> lines, int i, int j){
-        if (j >= lines.get(i).length() - 3 || i < 3) return false;
-        return lines.get(i - 1).charAt(j + 1) == 'M'
-                && lines.get(i - 2).charAt(j + 2) == 'A'
-                && lines.get(i - 3).charAt(j + 3) == 'S';
-    }
-
-    private static boolean southeast(ArrayList<String> lines, int i, int j){
-        if (j < 3 || i >= lines.size() - 3) return false;
-        return lines.get(i + 1).charAt(j - 1) == 'M'
-                && lines.get(i + 2).charAt(j - 2) == 'A'
-                && lines.get(i + 3).charAt(j - 3) == 'S';
-    }
-
-    private static boolean southwest(ArrayList<String> lines, int i, int j){
-        if (j >= lines.get(i).length() - 3 || i >= lines.size() - 3) return false;
-        return lines.get(i + 1).charAt(j + 1) == 'M'
-                && lines.get(i + 2).charAt(j + 2) == 'A'
-                && lines.get(i + 3).charAt(j + 3) == 'S';
+            if(match) count++;
+        }
+        return count;
     }
 
     private static boolean around(ArrayList<String> lines, int i, int j){

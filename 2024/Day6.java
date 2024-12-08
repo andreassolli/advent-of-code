@@ -83,7 +83,7 @@ public class Day6 {
             boolean exists = visited.add(x + "," + y);
             if(checkLoop){
                 if(!exists) sameWalk++;
-                else sameWalk = 0;
+                else{ sameWalk = 0;}
 
                 if(sameWalk > 1) return 0;
             }
