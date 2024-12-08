@@ -64,9 +64,6 @@ public class Day2 {
     }
 
     private static boolean isReallySafe(List<Integer> report){
-        if(isSafe(report)){
-            return true;
-        }
         for(int i = 0; i < report.size(); i++){
             List<Integer> testReport = new ArrayList<>();
 

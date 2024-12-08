@@ -1,23 +1,31 @@
 
 import static java.lang.Integer.parseInt;
-import java.util.Scanner;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day3 {
-    public static void multiplicationFinder(){
-        Scanner scanner = new Scanner(System.in);
-        StringBuilder input = new StringBuilder();
+    public static void main(String[] args){
+        StringBuilder lines = new StringBuilder();
 
-        while(scanner.hasNext()){
-            String line = scanner.nextLine();
-            if(line.equals("end")) break;
-            input.append(line);
+        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day3.txt"))){
+            String line = reader.readLine();
+
+            while(line != null){
+                lines.append(line);
+                line = reader.readLine();
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
         }
 
-        System.out.println(multiply(input));
+        System.out.println(multiply(lines));
 
-        System.out.println(multiplyDo(input));
+        System.out.println(multiplyDo(lines));
     }
 
     private static int multiply(StringBuilder input){
