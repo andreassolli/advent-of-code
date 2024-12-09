@@ -23,12 +23,12 @@ public class Day6 {
         int x = 0;
         int y = 0;
 
-        for(int i = 0; i < lines.size(); i++){
+        for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
-            if(line.contains("^")){
+            if (line.contains("^")) {
                 y = i;
-                for(int j = 0; j < line.length(); j++){
-                    if(line.charAt(j) == '^'){
+                for (int j = 0; j < line.length(); j++) {
+                    if (line.charAt(j) == '^') {
                         x = j;
                         break;
                     }
@@ -37,61 +37,66 @@ public class Day6 {
             }
         }
 
+        HashSet<String> visited = walk(lines, x, y);
         int possibleLoops = 0;
-        for(int i = 0; i < lines.size(); i++){
-            for(int j = 0; j < lines.getFirst().length() - 1; j++){
-                if(lines.get(i).charAt(j) != '#'){
-                    if(walk(lines, x, y, i, j) == 0) possibleLoops++;
+
+        for (int i = 0; i < lines.size(); i++) {
+            for (int j = 0; j < lines.getFirst().length(); j++) {
+                if (lines.get(i).charAt(j) != '^'
+                        && visited.contains(i + "," + j)) {
+                    if (walkObstacle(lines, x, y, j, i) == 0) possibleLoops++;
                 }
             }
         }
-        System.out.println(walk(lines, x, y, x, y));
+        System.out.println(visited.size());
         System.out.println(possibleLoops);
     }
 
-    private static int walk(ArrayList<String> lines, int x, int y, int obstacleX, int obstacleY){
-        int sameWalk = 0;
-        boolean checkLoop = false;
-        if(x != obstacleX && y != obstacleY) {
-            String obstacleLine = lines.get(obstacleY);
-            lines.remove(obstacleY);
-            obstacleLine = obstacleLine.substring(0, obstacleX) + "#" + obstacleLine.substring(obstacleX);
-            lines.add(obstacleY, obstacleLine);
-            checkLoop = true;
-        }
+    private static int walkObstacle(ArrayList<String> lines, int x, int y, int obstacleX, int obstacleY) {
+        String obstacleLine = lines.get(obstacleY);
+        lines.set(obstacleY, obstacleLine.substring(0, obstacleX) + "#" + obstacleLine.substring(obstacleX + 1));
 
-        HashSet<String> visited = new HashSet<>();
-        visited.add(x + "," + y);
+        HashSet<String> obstacles = new HashSet<>();
+        int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        int i = 0;
 
-        int direction = 0;
-
-        while(x > 0 && y > 0 && y < lines.size() - 1 && x < lines.getFirst().length() - 1){
-            if(direction == 0){
-                if(lines.get(y - 1).charAt(x) == '#') direction++;
-                else y--;
-            } else if(direction == 1){
-                if(lines.get(y).charAt(x + 1) == '#') direction++;
-                else x++;
-            } else if(direction == 2){
-                if(lines.get(y + 1).charAt(x) == '#') direction++;
-                else y++;
-            } else if(direction == 3){
-                if(lines.get(y).charAt(x - 1) == '#') direction++;
-                else x--;
+        while (x > 0 && y > 0 && y < lines.size() - 1 && x < lines.getFirst().length() - 1) {
+            if (lines.get(y + directions[i][0]).charAt(x + directions[i][1]) == '#'){
+                if(!obstacles.add(x + "," + y + " - " + directions[i][0] + directions[i][1])){
+                    lines.set(obstacleY, obstacleLine);
+                    return 0;
+                }
+                i++;
             }
-
-            boolean exists = visited.add(x + "," + y);
-            if(checkLoop){
-                if(!exists) sameWalk++;
-                else{ sameWalk = 0;}
-
-                if(sameWalk > 1) return 0;
+            else {
+                y += directions[i][0];
+                x += directions[i][1];
             }
-            if(direction == 4) direction = 0;
+            if(i == 4) i = 0;
         }
-
-        return(visited.size());
-
+        lines.set(obstacleY, obstacleLine);
+        return (obstacles.size());
     }
+
+    private static HashSet<String> walk(ArrayList<String> lines, int x, int y) {
+        HashSet<String> visited = new HashSet<>();
+        visited.add(y + "," + x);
+        int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+        int i = 0;
+
+        while (x > 0 && y > 0 && y < lines.size() - 1 && x < lines.getFirst().length() - 1) {
+            if (lines.get(y + directions[i][0]).charAt(x + directions[i][1]) == '#') i++;
+            else {
+                y += directions[i][0];
+                x += directions[i][1];
+            }
+            visited.add(y + "," + x);
+            if(i == 4) i = 0;
+        }
+
+        return visited;
+    }
+
+
 
 }
