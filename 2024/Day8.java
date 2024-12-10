@@ -33,29 +33,16 @@ public class Day8 {
                 ArrayList<String> prevAntennas = antennas.getOrDefault(antenna, new ArrayList<>());
                 prevAntennas.add(i + "," + j);
                 antennas.put(antenna, prevAntennas);
-                if(prevAntennas.size() > 1){
-                    for(int k = 0; k < prevAntennas.size(); k++){
-                        for(int l = 0; l < k; l++){
-                            String[] location = prevAntennas.get(k).split(",");
-                            int y = parseInt(location[0]);
-                            int x = parseInt(location[1]);
+                for(int k = 0; k < prevAntennas.size(); k++){
+                    String[] previous = prevAntennas.get(k).split(",");
+                    int x = parseInt(previous[0]);
+                    int y = parseInt(previous[1]);
+                    int diffX = Math.abs(x - j);
+                    int diffY = Math.abs(y - i);
 
-                            String[] nextLocation = prevAntennas.get(l).split(",");
-                            int nextY = parseInt(nextLocation[0]);
-                            int nextX = parseInt(nextLocation[1]);
-
-                            int diffY = Math.abs(nextY-y);
-                            int diffX = Math.abs(nextX-x);
-
-                            if(x - diffX >= 0 && y - diffY >= 0){
-                                antinodes.add((x-diffX) + "," + (y-diffY));
-                            }
-
-                            if(nextX + diffX < line.length() && nextY + diffY < lines.size()){
-                                antinodes.add((nextX+diffX) + "," + (nextY+diffY));
-                            }
-                        }
-                    }
+                    if(diffX == 0 && diffY == 0) continue;
+                    if(x-diffX >= 0 && y-diffY >= 0) antinodes.add((x-diffX) + "," + (y-diffY));
+                    if(j+diffX < line.length() && i+diffY < lines.size()) antinodes.add((j+diffX) + "," + (i+diffY));
                 }
             }
         }
