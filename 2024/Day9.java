@@ -25,9 +25,7 @@ public class Day9 {
             }
         }
 
-        for(int i = line.length() - 1; i >= 0 ; i--){
-            if(i % 2 == 0) shift(file);
-        }
+        shift(file);
 
         System.out.println(checksum(file));
     }
@@ -47,6 +45,7 @@ public class Day9 {
     private static int checksum(List<Integer> file){
         int sum = 0;
         for(int i = 0; i < file.size(); i++){
+            System.out.println(file.get(i));
             sum += file.get(i) * i;
         }
         return sum;
