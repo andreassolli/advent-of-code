@@ -13,7 +13,11 @@ public class Day8 {
         } catch (IOException e) {
             e.printStackTrace();
         }
+            System.out.println(findAntinodes(lines, false));
+            System.out.println(findAntinodes(lines, true));
+    }
 
+    private static int findAntinodes(List<String> lines, boolean all) {
         Map<Character, List<String>> antennas = new HashMap<>();
         Set<String> antinodes = new HashSet<>();
 
@@ -34,22 +38,33 @@ public class Day8 {
 
                     int antinodeY1 = prevY - diffY;
                     int antinodeX1 = prevX - diffX;
-                    if (antinodeY1 >= 0 && antinodeY1 < lines.size() &&
-                            antinodeX1 >= 0 && antinodeX1 < line.length()) {
-                        antinodes.add(antinodeY1 + "," + antinodeX1);
-                    }
 
                     int antinodeY2 = y + diffY;
                     int antinodeX2 = x + diffX;
-                    if (antinodeY2 >= 0 && antinodeY2 < lines.size() &&
-                            antinodeX2 >= 0 && antinodeX2 < line.length()) {
+
+                    if(all){
+                        antinodes.add(y + "," + x);
+                        antinodes.add(prevY + "," + prevX);
+                    }
+
+                    while(antinodeX1 >= 0 && antinodeY1 >= 0 && antinodeX1 < line.length() && antinodeY1 < lines.size()){
+                        antinodes.add(antinodeY1 + "," + antinodeX1);
+                        if(!all) break;
+                        antinodeX1 -= diffX;
+                        antinodeY1 -= diffY;
+                    }
+
+                    while(antinodeX2 >= 0 && antinodeY2 >= 0 && antinodeX2 < line.length() && antinodeY2 < lines.size()){
                         antinodes.add(antinodeY2 + "," + antinodeX2);
+                        if(!all) break;
+                        antinodeX2 += diffX;
+                        antinodeY2 += diffY;
                     }
                 }
 
                 positions.add(y + "," + x);
             }
         }
-        System.out.println(antinodes.size());
+        return antinodes.size();
     }
 }
