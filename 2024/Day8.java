@@ -1,22 +1,15 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
 public class Day8 {
     public static void main(String[] args) {
-        ArrayList<String> lines = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day8.txt"))) {
-            String line = reader.readLine();
-
-            while (line != null) {
-                lines.add(line);
-                line = reader.readLine();
-            }
-
+        List<String> lines = Collections.emptyList();
+        try {
+            lines = Files.readAllLines(Paths.get("2024/inputs/Day8.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,8 +29,8 @@ public class Day8 {
                     int prevY = parseInt(coords[0]);
                     int prevX = parseInt(coords[1]);
 
-                    int diffX = x - parseInt(coords[0]);
-                    int diffY = y - parseInt(coords[1]);
+                    int diffX = x - prevX;
+                    int diffY = y - prevY;
 
                     int antinodeY1 = prevY - diffY;
                     int antinodeX1 = prevX - diffX;

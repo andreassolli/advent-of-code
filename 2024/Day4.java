@@ -1,20 +1,14 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 
 public class Day4 {
     public static void main(String[] args) {
-        ArrayList<String> lines = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day4.txt"))) {
-            String line = reader.readLine();
-
-            while (line != null) {
-                lines.add(line);
-                line = reader.readLine();
-            }
-
+        List<String> lines = Collections.emptyList();
+        try {
+            lines = Files.readAllLines(Paths.get("2024/inputs/Day4.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,7 +32,7 @@ public class Day4 {
         System.out.println(totalMas);
     }
 
-    private static int directions(ArrayList<String> lines, int x, int y){
+    private static int directions(List<String> lines, int x, int y){
         int count = 0;
         int[][] directions = {{0,1}, {0,-1}, {1,1}, {1,0}, {1,-1}, {-1,1}, {-1,-1}, {-1,0}};
         String word = "MAS";
@@ -62,7 +56,7 @@ public class Day4 {
         return count;
     }
 
-    private static boolean around(ArrayList<String> lines, int i, int j){
+    private static boolean around(List<String> lines, int i, int j){
         if (i < 1 || j < 1 || i >= lines.size() - 1 || j >= lines.get(i).length() - 1) return false;
         int charTotals = 'M' + 'S';
         return(lines.get(i - 1).charAt(j - 1) + lines.get(i + 1).charAt(j + 1) == charTotals &&

@@ -1,24 +1,15 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
 public class Day5 {
     public static void main(String[] args) {
-        ArrayList<String> lines = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day5.txt"))) {
-            String line = reader.readLine();
-
-            while (line != null) {
-                lines.add(line);
-                line = reader.readLine();
-            }
-
+        List<String> lines = Collections.emptyList();
+        try {
+            lines = Files.readAllLines(Paths.get("2024/inputs/Day5.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -27,7 +18,7 @@ public class Day5 {
         System.out.println(fixNotCorrect(lines));
     }
 
-    private static int correctOrder(ArrayList<String> lines){
+    private static int correctOrder(List<String> lines){
         HashMap<String, String> order = new HashMap<>();
 
         int printingIndex = lines.indexOf("");
@@ -63,7 +54,7 @@ public class Day5 {
         return total;
     }
 
-    private static int fixNotCorrect(ArrayList<String> lines){
+    private static int fixNotCorrect(List<String> lines){
         HashMap<String, String> order = new HashMap<>();
 
         int printingIndex = lines.indexOf("");
