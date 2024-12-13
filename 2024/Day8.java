@@ -1,55 +1,70 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
 public class Day8 {
     public static void main(String[] args) {
-        ArrayList<String> lines = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day8.txt"))) {
-            String line = reader.readLine();
-
-            while (line != null) {
-                lines.add(line);
-                line = reader.readLine();
-            }
-
+        List<String> lines = Collections.emptyList();
+        try {
+            lines = Files.readAllLines(Paths.get("2024/inputs/Day8.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+            System.out.println(findAntinodes(lines, false));
+            System.out.println(findAntinodes(lines, true));
+    }
 
-        HashSet<String> antinodes = new HashSet<>();
-        HashMap<Character,ArrayList<String>> antennas = new HashMap<>();
-        for(int i = 0; i < lines.size(); i++){
-            String line = lines.get(i);
-            for(int j = 0; j < line.length(); j++){
-                char antenna = line.charAt(j);
-                if(antenna == '.') continue;
-                ArrayList<String> prevAntennas = antennas.getOrDefault(antenna, new ArrayList<>());
-                prevAntennas.add(i + "," + j);
-                antennas.put(antenna, prevAntennas);
-                for(int k = 0; k < prevAntennas.size(); k++){
-                    String[] previous = prevAntennas.get(k).split(",");
-                    int x = parseInt(previous[0]);
-                    int y = parseInt(previous[1]);
-                    int diffX = Math.abs(x - j);
-                    int diffY = Math.abs(y - i);
+    private static int findAntinodes(List<String> lines, boolean all) {
+        Map<Character, List<String>> antennas = new HashMap<>();
+        Set<String> antinodes = new HashSet<>();
 
-                    if(diffX == 0 && diffY == 0) continue;
-                    if(x-diffX >= 0 && y-diffY >= 0) antinodes.add((x-diffX) + "," + (y-diffY));
-                    if(j+diffX < line.length() && i+diffY < lines.size()) antinodes.add((j+diffX) + "," + (i+diffY));
+        for (int y = 0; y < lines.size(); y++) {
+            String line = lines.get(y);
+            for (int x = 0; x < line.length(); x++) {
+                char c = line.charAt(x);
+                if (c == '.') continue;
+
+                List<String> positions = antennas.computeIfAbsent(c, k -> new ArrayList<>());
+                for (String prev : positions) {
+                    String[] coords = prev.split(",");
+                    int prevY = parseInt(coords[0]);
+                    int prevX = parseInt(coords[1]);
+
+                    int diffX = x - prevX;
+                    int diffY = y - prevY;
+
+                    int antinodeY1 = prevY - diffY;
+                    int antinodeX1 = prevX - diffX;
+
+                    int antinodeY2 = y + diffY;
+                    int antinodeX2 = x + diffX;
+
+                    if(all){
+                        antinodes.add(y + "," + x);
+                        antinodes.add(prevY + "," + prevX);
+                    }
+
+                    while(antinodeX1 >= 0 && antinodeY1 >= 0 && antinodeX1 < line.length() && antinodeY1 < lines.size()){
+                        antinodes.add(antinodeY1 + "," + antinodeX1);
+                        if(!all) break;
+                        antinodeX1 -= diffX;
+                        antinodeY1 -= diffY;
+                    }
+
+                    while(antinodeX2 >= 0 && antinodeY2 >= 0 && antinodeX2 < line.length() && antinodeY2 < lines.size()){
+                        antinodes.add(antinodeY2 + "," + antinodeX2);
+                        if(!all) break;
+                        antinodeX2 += diffX;
+                        antinodeY2 += diffY;
+                    }
                 }
+
+                positions.add(y + "," + x);
             }
         }
-        System.out.println(antinodes.size());
-        for(String antinode: antinodes){
-            System.out.println(antinode);
-        }
-
+        return antinodes.size();
     }
 }

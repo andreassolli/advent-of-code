@@ -1,21 +1,17 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 public class Day6 {
     public static void main(String[] args) {
-        ArrayList<String> lines = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day6.txt"))) {
-            String line = reader.readLine();
-
-            while (line != null) {
-                lines.add(line);
-                line = reader.readLine();
-            }
-
+        List<String> lines = Collections.emptyList();
+        try {
+            lines = Files.readAllLines(Paths.get("2024/inputs/Day6.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +48,7 @@ public class Day6 {
         System.out.println(possibleLoops);
     }
 
-    private static int walkObstacle(ArrayList<String> lines, int x, int y, int obstacleX, int obstacleY) {
+    private static int walkObstacle(List<String> lines, int x, int y, int obstacleX, int obstacleY) {
         String obstacleLine = lines.get(obstacleY);
         lines.set(obstacleY, obstacleLine.substring(0, obstacleX) + "#" + obstacleLine.substring(obstacleX + 1));
 
@@ -78,7 +74,7 @@ public class Day6 {
         return (obstacles.size());
     }
 
-    private static HashSet<String> walk(ArrayList<String> lines, int x, int y) {
+    private static HashSet<String> walk(List<String> lines, int x, int y) {
         HashSet<String> visited = new HashSet<>();
         visited.add(y + "," + x);
         int[][] directions = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
