@@ -8,11 +8,13 @@ def end_number(line):
     for i in range(len(line) - 1, -1, -1):
         if(line[i].isnumeric()):
             return line[i]
+    return '0'
 
 def start_number(line):
     for i in range(len(line)):
         if(line[i].isnumeric()):
             return line[i]
+    return '0'
 
 numbers = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
@@ -26,19 +28,23 @@ def start(line):
     index = len(line)
     for i in range(len(line)):
         if i+4 < len(line):
-            if find_number(line[i:i+4]) > 0:
+            number = find_number(line[i:i+4])
+            if number > 0:
                 index = i
-            if i == index+4: return line[i:i+4]
+            if i == index+4: return numbers[number]
         if line[i].isnumeric(): return line[i]
+    return '0'
 
 def end(line):
     index = 0
     for i in range(len(line) - 1, -1, -1):
         if i-4 > 0:
-            if find_number(line[i-4:i]) > 0:
+            number = find_number(line[i-4:i])
+            if number > 0:
                 index = i
-            if i == index-4: return line[i:i+4]
+            if i == index-4: return numbers[number]
         if line[i].isnumeric(): return line[i]
+    return '0'
 
 for line in s.split("\n"):
     num = start_number(line) + end_number(line)
