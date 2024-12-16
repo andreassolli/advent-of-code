@@ -1,17 +1,11 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 
 public class Day4 {
-    public static void main(String[] args) {
-        List<String> lines = Collections.emptyList();
-        try {
-            lines = Files.readAllLines(Paths.get("2024/inputs/Day4.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws IOException{
+        List<String> lines = Files.readAllLines(Paths.get("2024/inputs/Day4.txt"));
 
         int total = 0;
         int totalMas = 0;

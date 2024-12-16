@@ -5,13 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Day9 {
-    public static void main(String[] args) {
-        String line = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day9.txt"))) {
-            line = reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws IOException{
+        BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day9.txt"));
+        String line = reader.readLine();
 
         System.out.println(performBlockByBlockCompaction(line));
         System.out.println(performWholeFileCompaction(line));

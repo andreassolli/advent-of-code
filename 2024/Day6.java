@@ -1,20 +1,12 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
 public class Day6 {
-    public static void main(String[] args) {
-        List<String> lines = Collections.emptyList();
-        try {
-            lines = Files.readAllLines(Paths.get("2024/inputs/Day6.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws IOException{
+        List<String> lines = Files.readAllLines(Paths.get("2024/inputs/Day6.txt"));
 
         int x = 0;
         int y = 0;

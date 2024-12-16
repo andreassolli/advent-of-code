@@ -1,19 +1,13 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Day10 {
-    public static void main(String[] args) {
-        List<String> lines = Collections.emptyList();
-        try {
-            lines = Files.readAllLines(Paths.get("2024/inputs/Day10.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws IOException{
+        List<String> lines = Files.readAllLines(Paths.get("2024/inputs/Day10.txt"));
 
         int part1 = 0;
         int part2 = 0;

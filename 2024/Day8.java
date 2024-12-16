@@ -6,15 +6,11 @@ import java.util.*;
 import static java.lang.Integer.parseInt;
 
 public class Day8 {
-    public static void main(String[] args) {
-        List<String> lines = Collections.emptyList();
-        try {
-            lines = Files.readAllLines(Paths.get("2024/inputs/Day8.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-            System.out.println(findAntinodes(lines, false));
-            System.out.println(findAntinodes(lines, true));
+    public static void main(String[] args) throws IOException{
+        List<String> lines = Files.readAllLines(Paths.get("2024/inputs/Day8.txt"));
+
+        System.out.println(findAntinodes(lines, false));
+        System.out.println(findAntinodes(lines, true));
     }
 
     private static int findAntinodes(List<String> lines, boolean all) {

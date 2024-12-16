@@ -1,4 +1,3 @@
-
 import static java.lang.Integer.parseInt;
 
 import java.io.BufferedReader;
@@ -8,23 +7,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day3 {
-    public static void main(String[] args){
+    public static void main(String[] args) throws  IOException{
         StringBuilder lines = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day3.txt"))){
-            String line = reader.readLine();
+        BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day3.txt"));
+        String line = reader.readLine();
 
-            while(line != null){
-                lines.append(line);
-                line = reader.readLine();
-            }
-
-        } catch (IOException e){
-            e.printStackTrace();
+        while(line != null){
+            lines.append(line);
+            line = reader.readLine();
         }
 
         System.out.println(multiply(lines));
-
         System.out.println(multiplyDo(lines));
     }
 

@@ -8,20 +8,16 @@ import static java.lang.Long.parseLong;
 
 public class Day11 {
     private static final Map<Long, Map<Long, Long>> cache = new HashMap<>();
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         Map<Long, Long> stoneMap = new HashMap<>();
-        List<Long> stones = Collections.emptyList();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day11.txt"))) {
-            stones = Arrays.stream(reader.readLine().split(" "))
-                    .map(s -> parseLong(s.trim()))
-                    .collect(Collectors.toList());
+        BufferedReader reader = new BufferedReader(new FileReader("2024/inputs/Day11.txt"));
+        List<Long> stones = Arrays.stream(reader.readLine().split(" "))
+                .map(s -> parseLong(s.trim()))
+                .collect(Collectors.toList());
 
-            for (Long s : stones) {
-                stoneMap.put(s, stoneMap.getOrDefault(s, 0L) + 1);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (Long s : stones) {
+            stoneMap.put(s, stoneMap.getOrDefault(s, 0L) + 1);
         }
 
         int blinks = 75;

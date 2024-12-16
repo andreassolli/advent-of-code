@@ -1,28 +1,16 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 
-//import static java.lang.Float.parseFloat;
-
 public class Day7 {
-    public static void main(String[] args) {
-        List<String> lines = Collections.emptyList();
-        try {
-            lines = Files.readAllLines(Paths.get("2024/inputs/Day7.txt"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public static void main(String[] args) throws IOException{
+        List<String> lines = Files.readAllLines(Paths.get("2024/inputs/Day7.txt"));
 
         long correct = 0;
         long concat = 0;
