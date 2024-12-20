@@ -1,7 +1,9 @@
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 
 import static java.util.Map.entry;
 
@@ -82,7 +84,8 @@ public class Day15 {
 
 
         if(part2){
-            while(grid[y + dy * count][x + dx * count] == '[' || grid[y + dy * count][x + dx * count] == ']') {
+            while(grid[y + dy * count][x + dx * count] == '[' || grid[y + dy * count][x + dx * count] == ']'
+                    || (count > 1 && (d == '^' || d == 'v') && (grid[y + dy * count][x + dx * count + 1] == '[' || grid[y + dy * count][x + dx * count - 1] == ']'))) {
                 count++;
             }
         } else {
@@ -99,19 +102,22 @@ public class Day15 {
                 int cy = y + dy * i;
                 int cx = x + dx * i;
                 char c = grid[cy - dy][cx - dx];
-                char c2 = '[';
-                int r = -1;
+                char c2 = '.';
+                int r = 0;
                 if(c == '['){
                     c2 = ']';
                     r = 1;
+                } else if (c == ']'){
+                    c2 = '[';
+                    r = -1;
                 }
+                System.out.println(c);
                 if(d == '^' || d == 'v'){
                     grid[cy][cx] = c;
                     grid[cy][cx + r] = c2;
                     grid[cy - dy][cx - dx + r] = '.';
                 } else {
                     grid[cy][cx] = c;
-
                 }
             }
         } else {
